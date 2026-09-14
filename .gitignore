@@ -1,0 +1,38 @@
+# ETRI 과제 데이터 — 공개 데이터가 아니다
+data/
+*.jpg
+*.jpeg
+*.png
+annotations/
+annotations-db/
+
+# 모델 가중치와 캐시된 특징 (약 12GB)
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.npz
+*.npy
+weights/
+features/
+dinov3_features/
+
+# 과제 내부 문서
+*.pptx
+*.pptx.md
+
+# 수집 결과
+collected_descriptions.jsonl
+
+# 파이썬
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 편집기 / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
