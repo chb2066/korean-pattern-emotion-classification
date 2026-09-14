@@ -1,4 +1,4 @@
-"""최종 배포 5개 fusion 모델(아키텍처 5종, description 텍스트만 사용, db-caption 미사용)의
+"""최종 배포 5개 fusion 모델(아키텍처 5종, description 텍스트만 사용)의
 val 확률을 앙상블해서 F1@5 평가. 가중치는 Dirichlet 랜덤서치로 탐색(val 446장 기준).
 final_model/config.json에 저장된 가중치와 동일한 조합을 재현한다."""
 import sys

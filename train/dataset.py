@@ -23,26 +23,6 @@ import numpy as np
 BASE = Path(os.environ.get("PATTERN_DATA_ROOT", "./data/orig_4.4k_260519"))
 ANN = BASE / "annotations"
 IMG = BASE / "images"
-ANNDB = BASE / "annotations-db"
-
-
-def load_db_captions():
-    """annotations-db 의 풍부한 paraphrase 캡션(ko)을 source_id(M-id) 기준으로 로드.
-
-    캡션은 'emo1, emo2, ... . <상세 서술>' 형태로 emotion 5개가 접두부에 붙어 있으니
-    첫 문장(접두부)을 제거해 라벨 leakage 를 막는다."""
-    caps = {}
-    for p in sorted(glob.glob(str(ANNDB / "*.json"))):
-        d = json.load(open(p, encoding="utf-8"))
-        sid = d.get("info", {}).get("source_id")
-        ko = d.get("annotation", {}).get("caption", {}).get("ko", "") or ""
-        if not sid or not ko:
-            continue
-        # 첫 '. ' 이후만 사용(감성 접두부 제거)
-        idx = ko.find(". ")
-        caps[sid] = ko[idx + 2:] if 0 <= idx < 120 else ko
-    return caps
-
 SEED = 42
 VAL_RATIO = 0.1
 
@@ -151,7 +131,7 @@ def build_doc(r, vocab=None, redact_emotions=True, desc_override=None):
 
     emotion 라벨 자체는 절대 넣지 않는다. redact_emotions=True 면 description/메타데이터
     문자열에 우연히 들어간 emotion 단어도 제거한다. desc_override 가 주어지면 원본
-    description 대신 그 텍스트를 '설명'에 쓴다(예: annotations-db 풍부한 캡션)."""
+    description 대신 그 텍스트를 '설명'에 쓴다."""
     desc = desc_override if desc_override is not None else r["description"]
     parts = [
         f"문양유형: {r['ptype']}",

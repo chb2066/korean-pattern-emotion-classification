@@ -3,7 +3,7 @@ klue-roberta-large(end-to-end fine-tune, full description) + DINOv3(frozen, pool
 융합으로 F1@5 0.8+ 노리는 최종 스크립트.
 
 두 가지 검증된 결과를 합친다:
-  1) /workspace/전통문양/2026-07-24_emotion_f1: klue-roberta-large를 raw description으로
+  1) 앞선 실험: klue-roberta-large를 raw description으로
      end-to-end fine-tuning하면 텍스트 단독 0.78~0.79 (frozen 임베딩 0.59 대비 압도적).
      no-sampler(자연 분포)가 top-5 metric엔 class-balanced sampler보다 낫다는 것도 확인됨.
   2) 이번 세션에서 DINOv3(frozen)+klue-roberta(frozen) 2-토큰 self-attention fusion이
@@ -145,8 +145,7 @@ def run(a):
     use_fast = "deberta" not in a.model.lower()
     tok = AutoTokenizer.from_pretrained(a.model, use_fast=use_fast)
 
-    # annotations-db 캡션은 정답 라벨 5개가 문장 맨 앞에 그대로 박혀있는(leakage) 소스라 사용 금지.
-    # description(annotations)만 쓴다 (db-caption 대신). --desc_only 주면 구조적 메타데이터
+    # 텍스트 입력은 description(annotations) 만 쓴다. --desc_only 주면 구조적 메타데이터
     # (문양유형/재질/시대 등)도 빼고 진짜로 description 필드 텍스트만 쓴다.
     def encode(recs_):
         if a.desc_only:

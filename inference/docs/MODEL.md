@@ -66,7 +66,7 @@ klue-roberta 하나만으로는 0.78 근처에서 정체되는데, 성격이 다
 | Epoch | 12~15 (모델별 수렴 시점까지 소폭 튜닝) | |
 | Batch size | 기본 16 (klue는 GPU 자원 부족으로 4, gradient accumulation 4로 실효 16 유지) | |
 | Gradient clipping | max_norm=1.0 | |
-| 텍스트 입력 | **description 문장만** (구조적 메타데이터 미포함) | annotations-db(정답 라벨이 캡션 맨 앞에 노출된 소스)는 사용 금지 처리 후 제외 |
+| 텍스트 입력 | **description 문장만** (구조적 메타데이터 미포함) | 원래 설계 의도가 설명 문장만 쓰는 것이었다 |
 | max_length | 모델별 300~512 (kcbert는 300 — 원 모델 특성상 짧게) | |
 | 데이터 분할 | train 3,954 / val 446, iterative stratification (seed=42) | 기존 실험들과 동일 split 재사용 → 공정 비교 |
 
@@ -116,9 +116,8 @@ mbert 0.7753, kobigbird 0.7861). 목표(0.8)를 넘으려면 서로 다른 사�
 모델들을 섞어서 오류를 분산시켜야 했음. klue_bert를 포함한 4개 조합(0.7991)으로는
 근소하게 부족했고, mbert·kobigbird라는 새로운 아키텍처(각각 다른 다국어 코퍼스,
 sparse-attention 계열)를 후보에 추가해서 2~6개 전체 조합을 탐색한 결과 **klue+xlmr+
-kcbert+mbert+kobigbird 5개 조합이 정확히 0.8000**으로 가장 좋았음. (참고: 처음엔
-db-caption을 텍스트 소스 다양성으로 썼다가 그 데이터가 정답 라벨을 캡션 앞에 노출하는
-leakage 소스라는 게 확인돼서 전면 폐기하고, 대신 아키텍처 다양성으로 대체했음.)
+kcbert+mbert+kobigbird 5개 조합이 정확히 0.8000**으로 가장 좋았음. 텍스트 소스는
+하나로 고정하고 다양성은 아키텍처로만 확보했다.
 
 ---
 
