@@ -160,11 +160,11 @@
 
 <div class="page">
   <p class="eyebrow">전통문양 감성분류 · 최종 배포 모델</p>
-  <h1>이미지+텍스트 융합 구조 — Self-Attention과 앙상블</h1>
+  <h1>이미지+텍스트 융합 구조 - Self-Attention과 앙상블</h1>
   <p class="lede">
     이미지 브랜치는 <code>DINOv3</code>를 완전히 얼린 채로 쓰고, 텍스트 브랜치(5개 아키텍처)는
     end-to-end로 fine-tuning한다. 둘을 <b>토큰 2개짜리 시퀀스</b>로 묶어 self-attention 한 층을
-    태우는 게 핵심 — Q, K, V가 전부 같은 2-토큰 시퀀스에서 나온다.
+    태우는 게 핵심 - Q, K, V가 전부 같은 2-토큰 시퀀스에서 나온다.
   </p>
 
   <section>
@@ -191,7 +191,7 @@
 
           <rect x="220" y="60" width="190" height="70" rx="8" fill="var(--frost-fill)" stroke="var(--frost-border)" stroke-width="1.5"/>
           <text x="315" y="83" text-anchor="middle" font-size="12.5" font-weight="700">DINOv3 (ViT-L)</text>
-          <text x="315" y="99" text-anchor="middle" font-size="10.5" fill="var(--ink-muted)">frozen — 가중치 고정</text>
+          <text x="315" y="99" text-anchor="middle" font-size="10.5" fill="var(--ink-muted)">frozen - 가중치 고정</text>
           <text x="315" y="114" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--ink-muted)">grad = 0</text>
 
           <line x1="410" y1="95" x2="446" y2="95" stroke="currentColor" marker-end="url(#arrow)"/>
@@ -208,7 +208,7 @@
 
           <rect x="220" y="240" width="190" height="70" rx="8" fill="var(--ember-fill)" stroke="var(--ember-border)" stroke-width="1.5"/>
           <text x="315" y="263" text-anchor="middle" font-size="12.5" font-weight="700">텍스트 인코더</text>
-          <text x="315" y="279" text-anchor="middle" font-size="10.5" fill="var(--ink-muted)">fine-tune — 5개 아키텍처</text>
+          <text x="315" y="279" text-anchor="middle" font-size="10.5" fill="var(--ink-muted)">fine-tune - 5개 아키텍처</text>
           <text x="315" y="294" text-anchor="middle" font-size="10" font-family="var(--font-mono)" fill="var(--ink-muted)">전체 가중치 학습 (freeze 없음)</text>
 
           <line x1="410" y1="275" x2="446" y2="275" stroke="currentColor" marker-end="url(#arrow)"/>
@@ -260,7 +260,7 @@
       </svg>
 
       <figcaption>
-        <b>Q, K, V가 전부 같은 2-토큰 시퀀스에서 나온다</b> — 텍스트가 query, 이미지가 key/value인
+        <b>Q, K, V가 전부 같은 2-토큰 시퀀스에서 나온다</b> - 텍스트가 query, 이미지가 key/value인
         cross-attention이 아니라 표준 self-attention. <code>nn.MultiheadAttention</code>이 내부에서
         자체 학습한 W_q·W_k·W_v(각 1024×1024)로 두 토큰을 각각 투영해 8-head로 나눠 계산하고,
         결과적으로 두 토큰 모두 [자기 자신, 상대방] 두 값에 대한 가중합을 받는다.
@@ -273,7 +273,7 @@
         <div><dt>Head LR</dt><dd>1e-3</dd></div>
         <div><dt>Schedule</dt><dd>OneCycleLR (pct_start=0.1)</dd></div>
         <div><dt>Epoch</dt><dd>모델별 수렴 시점까지</dd></div>
-        <div><dt>Sampler</dt><dd>없음 — natural 분포가 top-5 지표에 유리</dd></div>
+        <div><dt>Sampler</dt><dd>없음 - natural 분포가 top-5 지표에 유리</dd></div>
         <div><dt>Split</dt><dd>train 3,954 / val 446 (seed=42)</dd></div>
       </dl>
 
@@ -286,8 +286,8 @@
   </section>
 
   <section>
-    <h2>2. 앙상블 — 5개 모델 → 가중합</h2>
-    <p class="section-note">위 파이프라인을 서로 다른 텍스트 아키텍처 5개로 독립 학습시킨 뒤(전부 description만 입력, 전체 fine-tuning), 확률을 가중합한다 (post-hoc, late fusion — 학습 중 서로 상호작용하지 않음).</p>
+    <h2>2. 앙상블 - 5개 모델 → 가중합</h2>
+    <p class="section-note">위 파이프라인을 서로 다른 텍스트 아키텍처 5개로 독립 학습시킨 뒤(전부 description만 입력, 전체 fine-tuning), 확률을 가중합한다 (post-hoc, late fusion - 학습 중 서로 상호작용하지 않음).</p>
 
     <figure>
       <svg viewBox="0 0 700 420" role="img" aria-label="klue, xlmr, kcbert, mbert, kobigbird 5개 모델이 각각 독립적으로 예측 확률을 내고, Dirichlet 탐색으로 찾은 가중치로 가중합하여 최종 top-5 라벨을 예측하며 F1@5는 0.8000">
@@ -348,7 +348,7 @@
       <figcaption>
         5개 모델은 학습 중 서로의 존재를 모른 채 <b>완전히 독립적으로</b> 학습된다. 앙상블은 학습이
         전부 끝난 뒤, 저장해둔 val 확률을 불러와 가중치를 랜덤서치(수만 회 샘플링)로 찾는 후처리
-        단계다 — 개별 모델은 전부 0.77~0.78대에 머물지만, 서로 다른 사전학습 코퍼스/아키텍처라
+        단계다 - 개별 모델은 전부 0.77~0.78대에 머물지만, 서로 다른 사전학습 코퍼스/아키텍처라
         오류가 decorrelated되어 앙상블에서 0.80을 넘는다.
       </figcaption>
     </figure>

@@ -7,7 +7,7 @@ klue-roberta-large(end-to-end fine-tune, full description) + DINOv3(frozen, pool
      end-to-end fine-tuning하면 텍스트 단독 0.78~0.79 (frozen 임베딩 0.59 대비 압도적).
      no-sampler(자연 분포)가 top-5 metric엔 class-balanced sampler보다 낫다는 것도 확인됨.
   2) 이번 세션에서 DINOv3(frozen)+klue-roberta(frozen) 2-토큰 self-attention fusion이
-     concat보다 나음(0.677 vs 0.661) — 가벼운 attention(토큰 2개뿐)은 ML-Decoder 같은
+     concat보다 나음(0.677 vs 0.661) - 가벼운 attention(토큰 2개뿐)은 ML-Decoder 같은
      무거운 구조와 달리 collapse 안 하고 실제 이득을 냄.
 
 이번엔 roberta를 얼리지 않고(end-to-end) 이미지(DINOv3, frozen, 캐시 재사용)와 결합한다.
@@ -24,7 +24,7 @@ DINOv3 이미지 특징은 기존에 이미 뽑아둔 캐시(dinov3_features/fea
   python train_fusion_final.py --tag mbert_descOnly     --model bert-base-multilingual-cased --desc_only                                                   --gpu 3
   python train_fusion_final.py --tag kobigbird_descOnly --model monologg/kobigbird-bert-base --desc_only                                                   --gpu 4
 
---desc_only 없이 돌리면 description+구조적 메타데이터를 합쳐서 쓴다(비권장 — 최종 배포와
+--desc_only 없이 돌리면 description+구조적 메타데이터를 합쳐서 쓴다(비권장 - 최종 배포와
 다른 설정). 각 features/fusion_{tag}_val.npz 에 val_prob/val_ids/val_f1 저장됨 →
 ensemble.py로 앙상블 평가.
 """

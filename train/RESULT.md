@@ -29,7 +29,7 @@ image+text 둘 다 사용해서 F1@5 0.8 이상.
 - koelectra-base, mdeberta-v3-base(로딩 실패), klue-bert-base, deberta-v3-xlarge-korean
   (토크나이저 호환성 문제로 학습 불가)도 시도했으나 최종 5개 조합보다 낫지 않아 제외.
 
-## 개별 모델 성능 (val F1@5) — 최종 배포 5개, 전부 description-only
+## 개별 모델 성능 (val F1@5) - 최종 배포 5개, 전부 description-only
 | 태그 | 아키텍처 | 비고 | F1@5 |
 |---|---|---|---|
 | klue_descOnly_cfgB | klue-roberta-large | fine-tuning 설정 튜닝 | 0.7794 |
@@ -71,13 +71,13 @@ python train_fusion_final.py --tag kcbert_descOnly    --model beomi/kcbert-large
 python train_fusion_final.py --tag mbert_descOnly     --model bert-base-multilingual-cased --desc_only                                                   --gpu 3
 python train_fusion_final.py --tag kobigbird_descOnly --model monologg/kobigbird-bert-base --desc_only                                                   --gpu 4
 ```
-`--desc_only`를 안 주면 기존처럼 description+구조적 메타데이터를 합쳐서 쓴다(비권장 —
+`--desc_only`를 안 주면 기존처럼 description+구조적 메타데이터를 합쳐서 쓴다(비권장
 원래 의도와 다름). 각 `features/fusion_{tag}_val.npz`에 val_prob/val_ids/val_f1 저장됨.
 `ensemble.py`(TAGS=최종 5개 하드코딩)로 앙상블 평가.
 
 ## 참고
 - `features/`에는 위 5개 외에도 과정에서 시도했던 여러 변형(메타데이터 포함 버전, 시드
-  배깅 7개 버전, same-LR 실험, klue_bert 포함 4개 버전 등)의 체크포인트가 같이 남아있음 —
+  배깅 7개 버전, same-LR 실험, klue_bert 포함 4개 버전 등)의 체크포인트가 같이 남아있음
   전부 참고용이고, 실제 배포는 위 5개(`final_model/` = `inference/`)만 사용함.
 - 별도 트랙에서 **텍스트 단독**으로 0.8099 를 기록했으나, 조건이 달라 위 결과와 직접
   비교할 수 없다.

@@ -5,7 +5,7 @@
 
 의존성: ../inference/(config.json, weights/) 를 그대로 불러와 씀 (가중치 중복 보관 안 함).
 description 자동완성 기능은 원본 ETRI 데이터셋(../train/dataset.py 가 참조하는 경로)이
-로컬에 있어야 동작함 — 없어도 모델 추론 자체는 정상 동작함(자동완성만 비활성).
+로컬에 있어야 동작함 - 없어도 모델 추론 자체는 정상 동작함(자동완성만 비활성).
 
 사용법:
   python app_gradio.py
@@ -367,7 +367,7 @@ with gr.Blocks(title="전통문양 감성분류 (F1@5=0.8022)") as demo:
         with gr.Tab("여러 이미지 확인"):
             gr.Markdown(
                 "여러 이미지를 한 번에 올리면 각각 예측해서 카드로 보여줍니다. "
-                "**데이터셋에 있는 이미지(파일명이 원본 그대로)만** 지원합니다 — "
+                "**데이터셋에 있는 이미지(파일명이 원본 그대로)만** 지원합니다 - "
                 "`data_split/train` 또는 `data_split/val` 안의 이미지를 여러 개 선택해서 올려보세요."
             )
             batch_files = gr.File(label="이미지 여러 개 업로드", file_count="multiple", type="filepath")

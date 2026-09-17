@@ -1,6 +1,6 @@
 # Gradio 데모
 
-## app_gradio.py — 감성분류 데모 (모델 추론)
+## app_gradio.py - 감성분류 데모 (모델 추론)
 이미지 + description을 넣으면 top-5 감성 라벨/점수를 보여준다. `../inference/`의 config.json과
 weights/를 그대로 불러와 쓰므로(가중치 중복 보관 안 함) 실행 전 `../inference/`가 있어야 한다.
 
@@ -15,7 +15,7 @@ python app_gradio.py
   유효). 공개 링크가 필요 없으면 `app_gradio.py` 맨 아래 `demo.launch(...)`에서 `share=False`로
   바꿀 것.
 
-## collect_description.py — description 수집용 경량 도구
+## collect_description.py - description 수집용 경량 도구
 모델 추론 없이(GPU 불필요) 이미지에 대한 description 텍스트만 받아서 `collected_descriptions.jsonl`에
 저장하는 별도 도구. 새 데이터 라벨링/수집 시 사용.
 

@@ -2,7 +2,7 @@
 
 이미지(DINOv3) + 텍스트(5개 언어모델) 융합 앙상블. **val F1@5 = 0.8000**
 
-**완전히 독립 실행 가능** — 이 폴더 밖의 어떤 코드에도 의존하지 않음 (새 가상환경에서
+**완전히 독립 실행 가능** - 이 폴더 밖의 어떤 코드에도 의존하지 않음 (새 가상환경에서
 `pip install -r requirements.txt` 후 바로 실행되는 것까지 확인함).
 
 ## 빠른 시작
@@ -52,25 +52,25 @@ inference/
 ```
 
 ## 의존성
-- `requirements.txt`에 명시된 파이썬 패키지(torch/torchvision/transformers 등) — 버전까지
+- `requirements.txt`에 명시된 파이썬 패키지(torch/torchvision/transformers 등) - 버전까지
   고정돼있고 새 venv에서 설치→실행 테스트 완료.
 - HuggingFace 모델: `klue/roberta-large`, `xlm-roberta-large`, `beomi/kcbert-large`,
   `bert-base-multilingual-cased`, `monologg/kobigbird-bert-base`,
-  `facebook/dinov3-vitl16-pretrain-lvd1689m` — **최초 실행 시** 자동으로 다운로드/캐시됨
+  `facebook/dinov3-vitl16-pretrain-lvd1689m` - **최초 실행 시** 자동으로 다운로드/캐시됨
   (인터넷 연결 필요, 총 용량 대략 5~6GB). 두 번째 실행부터는 로컬 캐시 사용.
 - GPU 없어도 동작은 하지만(`--device cpu`) 텍스트 백본 5개를 다 CPU로 돌리면 많이 느림.
 
 ## 참고
-- **텍스트 입력은 description 문장만 사용** — 문양유형/재질/시대 같은 구조적 메타데이터는
+- **텍스트 입력은 description 문장만 사용** - 문양유형/재질/시대 같은 구조적 메타데이터는
   넣지 않음(이전 버전은 메타데이터를 같이 넣었는데, description만 쓰는 게 원래 의도였다는
   게 확인돼서 이번 버전부터 뺐음). 메타데이터를 빼도 성능 차이는 크지 않았음(±0.003~0.004).
-- 총 5개 모델(klue, xlmr, kcbert, mbert, kobigbird) — 전부 description-only, end-to-end
+- 총 5개 모델(klue, xlmr, kcbert, mbert, kobigbird) - 전부 description-only, end-to-end
   fine-tuning. 모델별 fine-tuning 설정을 소폭 튜닝해서 검증 성능을 확인 후 채택함(자세한
   근거는 `docs/모델METHOD.md` §5 참고).
 - mbert(bert-base-multilingual-cased), kobigbird(monologg/kobigbird-bert-base)는 이번에
-  새로 추가한 아키텍처 — 기존 klue/xlmr/kcbert 계열과 사전학습 코퍼스·구조가 달라서
+  새로 추가한 아키텍처 - 기존 klue/xlmr/kcbert 계열과 사전학습 코퍼스·구조가 달라서
   앙상블 다양성에 기여함. (kobigbird는 sparse attention 구조지만 이번 max_length=512
-  설정에서는 sequence가 짧아 자동으로 full attention으로 대체됨 — 그래도 사전학습 자체가
+  설정에서는 sequence가 짧아 자동으로 full attention으로 대체됨 - 그래도 사전학습 자체가
   다른 계열이라 다양성 효과는 있음.)
 - 4개 모델(klue_bert 포함) 조합은 0.7991로 0.8 미달이었고, klue_bert를 kobigbird로
   바꾼 5개 조합이 정확히 0.8000을 달성해서 이걸 채택함. 2~6개 전체 조합 탐색 결과이므로
@@ -87,9 +87,9 @@ inference/
 - 학습 코드(재현용)는 `../train/` 참고.
 
 ## 구조도 & 상세 설명
-- [`docs/fusion_architecture.html`](docs/fusion_architecture.html) — 모델 구조도 (단일모델
+- [`docs/fusion_architecture.html`](docs/fusion_architecture.html) - 모델 구조도 (단일모델
   파이프라인의 Q=K=V self-attention 상세 + 5개 모델 앙상블 가중합)
-- [`docs/모델METHOD.md`](docs/모델METHOD.md) — 사용 모델, 학습 디테일, 설계 이유(왜 이미지는
+- [`docs/모델METHOD.md`](docs/모델METHOD.md) - 사용 모델, 학습 디테일, 설계 이유(왜 이미지는
   얼리고 텍스트는 학습시켰는지, 왜 description만 쓰는지, 왜 5개를 앙상블했는지), **learning
   rate를 다르게 잡은 의도**, 그리고 **"얼리거나 같은 LR로 풀면 어떻게 되는지"를 실제로
   실험한 결과**까지 전부 정리.
