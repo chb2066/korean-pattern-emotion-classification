@@ -147,7 +147,7 @@ distillation과 비슷한 방식으로 설계**한 것이다:
 아래 §5-1 검증 결과를 바탕으로, 모델별 fine-tuning 설정(backbone LR, epoch)을 소폭
 조정했다 - backbone을 더 천천히, 더 오래 적응시키는 방향이 유효하다는 걸 klue 모델로
 재확인함(0.7767→0.7794). 정확한 재현 설정은 `train_fusion_final.py` 실행 커맨드
-(RESULT.md §재현) 참고.
+(프로젝트 노트 참고: https://chb2066.github.io/projects/traditional-patterns/)
 
 ### 5-1. 추가 검증 - "그럼 얼리거나, 아예 같은 LR로 풀면 안 되나?"를 직접 실험함
 

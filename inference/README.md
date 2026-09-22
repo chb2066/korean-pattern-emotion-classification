@@ -48,7 +48,7 @@ inference/
 │   └── kobigbird.pt    # kobigbird-bert-base (val F1=0.7861)
 └── docs/
     ├── fusion_architecture.html  # 구조도(단일모델 파이프라인 + 앙상블)
-    └── 모델METHOD.md         # 상세 설명(아래 참고)
+    └── MODEL.md         # 모델 구조 상세
 ```
 
 ## 의존성
@@ -66,7 +66,7 @@ inference/
   게 확인돼서 이번 버전부터 뺐음). 메타데이터를 빼도 성능 차이는 크지 않았음(±0.003~0.004).
 - 총 5개 모델(klue, xlmr, kcbert, mbert, kobigbird) - 전부 description-only, end-to-end
   fine-tuning. 모델별 fine-tuning 설정을 소폭 튜닝해서 검증 성능을 확인 후 채택함(자세한
-  근거는 `docs/모델METHOD.md` §5 참고).
+  근거는 `docs/MODEL.md` 참고).
 - mbert(bert-base-multilingual-cased), kobigbird(monologg/kobigbird-bert-base)는 이번에
   새로 추가한 아키텍처 - 기존 klue/xlmr/kcbert 계열과 사전학습 코퍼스·구조가 달라서
   앙상블 다양성에 기여함. (kobigbird는 sparse attention 구조지만 이번 max_length=512
@@ -83,13 +83,10 @@ inference/
   | Frozen | ~0.68 |
   | Fine-tune (채택) | 0.77~0.79 |
 - 앙상블 가중치는 val 446장 기준 랜덤서치로 탐색한 값(config.json의 `ensemble_weight`).
-- 상세 실험 과정/정정 이력은 `../train/RESULT.md`, `../train/METHOD.md` 참고.
+- 설계 근거와 실험 기록은 프로젝트 노트에 있음: https://chb2066.github.io/projects/traditional-patterns/
 - 학습 코드(재현용)는 `../train/` 참고.
 
 ## 구조도 & 상세 설명
 - [`docs/fusion_architecture.html`](docs/fusion_architecture.html) - 모델 구조도 (단일모델
   파이프라인의 Q=K=V self-attention 상세 + 5개 모델 앙상블 가중합)
-- [`docs/모델METHOD.md`](docs/모델METHOD.md) - 사용 모델, 학습 디테일, 설계 이유(왜 이미지는
-  얼리고 텍스트는 학습시켰는지, 왜 description만 쓰는지, 왜 5개를 앙상블했는지), **learning
-  rate를 다르게 잡은 의도**, 그리고 **"얼리거나 같은 LR로 풀면 어떻게 되는지"를 실제로
-  실험한 결과**까지 전부 정리.
+- [`docs/MODEL.md`](docs/MODEL.md) - 사용 모델, 학습 디테일, 모델별 learning rate 설정
