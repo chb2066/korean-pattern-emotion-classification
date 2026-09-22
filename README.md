@@ -55,15 +55,17 @@ HuggingFace 백본은 최초 실행 시 자동으로 내려받아 캐시합니�
 
 ## 데이터
 
-ETRI 과제로 구축된 데이터셋이라 이미지도 어노테이션도 공개할 수 없습니다. 따라서 표기된 성능을 그대로 재현할 수는 없습니다. 다만 문화포털 등에 공개된 전통문양 데이터에 적용해 볼 수 있습니다.
+ETRI 과제로 구축된 데이터셋이라 이미지도 어노테이션도 공개할 수 없습니다. 따라서 표기된 성능을 그대로 재현할 수는 없습니다.
+
+다만 텍스트 입력으로 쓰는 `description` 은 문화포털이 원래 제공하는 설명 데이터이므로, 문화포털 등에 공개된 전통문양 이미지와 그 설명을 그대로 넣어 추론해 볼 수 있습니다.
 
 학습 코드가 기대하는 레코드 구성은 다음과 같습니다.
 
 | 필드 | 설명 |
 |---|---|
 | 이미지 | 흑백 선화 문양 이미지 파일 |
-| `description` | 이미지 설명 문장. 학습에 쓰는 유일한 텍스트 입력. 사람이 쓴 것이 아닙니다 |
-| 감성 라벨 | 22개 어휘 중 5개. **사람이 만든 것은 이쪽입니다** |
+| `description` | 문화포털이 원래 제공하는 이미지 설명 데이터. 학습에 쓰는 유일한 텍스트 입력 |
+| 감성 라벨 | 22개 어휘 중 5개. 이 과제에서 사람이 만든 것은 이쪽입니다 |
 
 데이터 위치는 환경변수로 지정합니다.
 
@@ -123,9 +125,14 @@ labels, scores = model.predict(image_path, description, topk=5)
 
 ### 데모
 
+이미지와 `description` 을 넣으면 top-5 감성 라벨과 점수를 보여줍니다. `inference/` 의 `config.json` 과 가중치를 그대로 불러 쓰므로 가중치를 따로 두지 않습니다.
+
 ```bash
+pip install -r inference/requirements.txt gradio
 python gradio/app_gradio.py
 ```
+
+기본으로 `0.0.0.0:7860` 에 뜨고 `share=True` 라 공개 gradio.live 링크도 함께 생성됩니다(최대 7일). 공개 링크가 필요 없으면 `app_gradio.py` 맨 아래 `demo.launch(...)` 의 `share` 를 `False` 로 바꾸세요.
 
 ## 저장소 구조
 
@@ -143,7 +150,7 @@ val/
   analyze_val.py          라벨별 성능, 혼동 분석, 모델 간 예측 다양성
 gradio/
   app_gradio.py           데모
-  collect_description.py  설명 문장 수집 도구
+  collect_description.py  새 이미지의 description 을 받아 모으는 별도 도구 (추론 없음)
 ```
 
 모델 가중치 5개는 파일 하나당 GitHub 한도 100MB 를 넘어 포함하지 않았습니다.
