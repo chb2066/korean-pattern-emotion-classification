@@ -7,7 +7,7 @@
 
 ## 빠른 시작
 ```bash
-cd inference   # (배포 위치에 따라 폴더명이 final_model일 수도 있음)
+cd inference
 python3 -m venv venv && source venv/bin/activate   # (선택) 새 가상환경
 pip install -r requirements.txt
 python infer.py --image /path/to/image.jpg --description "이미지에 대한 한국어 설명"

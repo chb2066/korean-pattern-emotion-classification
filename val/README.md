@@ -2,7 +2,7 @@
 
 `analyze_val.py`로 val set(446장) 기준 최종 앙상블(F1@5=0.8000) 예측을 라벨별/샘플별로 뜯어본
 결과 요약. 재현하려면 `../train/`에서 `ensemble.py`가 먼저 정상 실행되어 `features/*_val.npz`가
-있어야 함 (이미 포함되어 있어 바로 실행 가능).
+있어야 함.
 
 ```bash
 python analyze_val.py

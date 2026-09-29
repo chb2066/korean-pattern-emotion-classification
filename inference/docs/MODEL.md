@@ -190,4 +190,4 @@ klue_bert를 kobigbird로 교체한 5개 조합이 정확히 0.8000으로 가장
 이 조합을 최종 채택함.
 
 (참고 체크포인트: `features/fusion_klue_samelr_low_*.pt`, `fusion_*_descOnly_*.pt` 등
-과정에서 나온 여러 변형은 참고용으로 `final_model/`(=`inference/`)엔 포함 안 함)
+과정에서 나온 여러 변형은 `inference/` 에 포함하지 않음)

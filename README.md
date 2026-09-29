@@ -112,17 +112,6 @@ model = EnsembleModel()
 labels, scores = model.predict(image_path, description, topk=5)
 ```
 
-## 데모
-
-이미지와 `description` 을 넣으면 top-5 감성 라벨과 점수를 보여줌. `inference/` 의 `config.json` 과 가중치를 그대로 불러 쓰므로 가중치를 따로 두지 않음.
-
-```bash
-pip install -r inference/requirements.txt gradio
-python gradio/app_gradio.py
-```
-
-기본으로 `0.0.0.0:7860` 에 뜨고 `share=True` 라 공개 gradio.live 링크도 함께 생성됨(최대 7일). 공개 링크가 필요 없으면 `app_gradio.py` 맨 아래 `demo.launch(...)` 의 `share` 를 `False` 로 바꾸면 됨.
-
 ## 라이선스
 
 사용하는 사전학습 모델과 데이터셋은 각 출처의 라이선스 및 이용약관을 따름.
