@@ -15,6 +15,8 @@ F1@5 = |예측 ∩ 정답| / 5
 
 val 446장 기준. 다섯 모델 모두 동일한 frozen DINOv3 feature 와 융합한 뒤 fine-tune 함.
 
+학습된 가중치는 배포하지 않음. 아래 표는 학습 결과 기록이고, 재현은 `train/` 의 학습 코드로 하면 됨. HuggingFace 백본은 표에 적힌 이름으로 자동으로 받아짐.
+
 | Model | HuggingFace | val F1@5 |
 |---|---|---:|
 | kobigbird | `monologg/kobigbird-bert-base` | 0.7861 |
@@ -80,7 +82,7 @@ python val/analyze_val.py                        # val 결과 분석
 
 ## 추론
 
-데이터셋 없이 가중치만 있으면 됨.
+학습으로 만든 가중치를 `inference/weights/` 에 두면 데이터셋 없이 동작함. 가중치 파일명은 `inference/config.json` 에 적힌 대로 `klue.pt`, `xlmr.pt`, `kcbert.pt`, `mbert.pt`, `kobigbird.pt` 임.
 
 ```bash
 cd inference
