@@ -8,6 +8,8 @@ F1@5 = |예측 ∩ 정답| / 5
 
 이 저장소는 이미지 인코더 하나와 텍스트 인코더 다섯 개를 각각 융합한 모델 5종을 학습하고, 그 확률을 가중합해 앙상블하는 코드임.
 
+모델 사양과 학습 디테일은 [inference/docs/MODEL.md](inference/docs/MODEL.md) 에 있음.
+
 설계 근거와 실험 기록은 저장소가 아니라 프로젝트 노트에 있음.
 → [전통문양 감성 라벨 예측](https://chb2066.github.io/projects/traditional-patterns/)
 

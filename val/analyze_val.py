@@ -1,5 +1,5 @@
 """최종 5개 앙상블 모델의 val(446장) 예측을 라벨별/샘플별로 뜯어보는 분석 스크립트.
-../train/features/*_val.npz 를 읽는다 (../train/ensemble.py 로 학습 재현 후 생성됨).
+../train/features/*_val.npz 를 읽는다. 이 파일은 train_fusion_final.py 가 모델마다 저장한다.
 
 사용법:
   python analyze_val.py

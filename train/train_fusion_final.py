@@ -1,32 +1,27 @@
-"""
-klue-roberta-large(end-to-end fine-tune, full description) + DINOv3(frozen, pooled) 이미지
-융합으로 F1@5 0.8+ 노리는 최종 스크립트.
+"""이미지-텍스트 융합 모델 학습 스크립트.
 
-두 가지 검증된 결과를 합친다:
-  1) 앞선 실험: klue-roberta-large를 raw description으로
-     end-to-end fine-tuning하면 텍스트 단독 0.78~0.79 (frozen 임베딩 0.59 대비 압도적).
-     no-sampler(자연 분포)가 top-5 metric엔 class-balanced sampler보다 낫다는 것도 확인됨.
-  2) 이번 세션에서 DINOv3(frozen)+klue-roberta(frozen) 2-토큰 self-attention fusion이
-     concat보다 나음(0.677 vs 0.661) - 가벼운 attention(토큰 2개뿐)은 ML-Decoder 같은
-     무거운 구조와 달리 collapse 안 하고 실제 이득을 냄.
+텍스트 인코더(한국어 LM)를 end-to-end fine-tune 하고, 동결한 DINOv3 이미지 특징과
+2토큰 self-attention 으로 융합해 22개 감성 라벨 중 5개를 예측한다.
 
-이번엔 roberta를 얼리지 않고(end-to-end) 이미지(DINOv3, frozen, 캐시 재사용)와 결합한다.
-텍스트가 압도적으로 강한 신호라 이미지 branch가 텍스트를 희석시키지 않도록, 이미지는
-projection + light attention으로만 관여하고 discriminative LR(백본 낮게, 새 레이어 높게)을 쓴다.
+설계
+  - 텍스트가 이 과제의 지배적인 신호이므로, 이미지 branch 가 텍스트를 희석시키지
+    않도록 projection + 경량 attention 으로만 관여시킨다.
+  - discriminative LR 을 쓴다. 사전학습 backbone 은 낮게, 새로 만든 레이어는 높게.
+  - DINOv3 특징은 dinov3_features/features_*.pt 캐시를 재사용한다. split 과 seed 가
+    같으면 id 가 그대로 일치한다.
 
-DINOv3 이미지 특징은 기존에 이미 뽑아둔 캐시(dinov3_features/features_*.pt, 이 스크립트와
-같은 디렉토리)를 그대로 재사용한다 (동일 split/seed로 id가 정확히 일치함을 확인함).
-
-사용법 (최종 배포 5개 모델, description-only, inference/config.json과 동일 조합):
+사용법 (최종 구성 5개 모델, description-only. inference/config.json 과 같은 조합)
   python train_fusion_final.py --tag klue_descOnly_cfgB --model klue/roberta-large --desc_only --lr 1e-5 --dropout 0.1 --bs 4 --grad_accum 4 --max_length 384 --epochs 15 --gpu 0
   python train_fusion_final.py --tag xlmr_descOnly      --model xlm-roberta-large --desc_only                                                              --gpu 1
   python train_fusion_final.py --tag kcbert_descOnly    --model beomi/kcbert-large --desc_only --max_length 300                                            --gpu 2
   python train_fusion_final.py --tag mbert_descOnly     --model bert-base-multilingual-cased --desc_only                                                   --gpu 3
   python train_fusion_final.py --tag kobigbird_descOnly --model monologg/kobigbird-bert-base --desc_only                                                   --gpu 4
 
---desc_only 없이 돌리면 description+구조적 메타데이터를 합쳐서 쓴다(비권장 - 최종 배포와
-다른 설정). 각 features/fusion_{tag}_val.npz 에 val_prob/val_ids/val_f1 저장됨 →
-ensemble.py로 앙상블 평가.
+--desc_only 를 빼면 description 에 구조적 메타데이터를 붙여 쓴다. 최종 구성과 다르므로
+권장하지 않는다.
+
+각 실행은 features/fusion_{tag}_val.npz 에 val_prob / val_ids / val_f1 을 저장한다.
+다섯 개가 모두 생성되면 ensemble.py 로 가중치를 탐색한다.
 """
 import argparse
 import os

@@ -1,8 +1,9 @@
 """
-전통문양 감성분류 최종 인퍼런스 (이미지 + 텍스트 4개 모델 앙상블, val F1@5=0.8022).
+전통문양 감성분류 인퍼런스. 이미지(DINOv3 frozen) + 텍스트 5개 모델 앙상블, val F1@5 = 0.8000.
 
 이미지 경로 + description 텍스트를 받아서 top-5 감성 라벨을 예측한다.
-필요한 건 전부 이 디렉토리(config.json, weights/*.pt) 안에 있음.
+config.json 과 weights/*.pt 가 이 디렉토리에 있어야 한다. 가중치는 배포하지 않으므로
+    ../train/ 의 학습 코드로 만들어 weights/ 에 두면 된다.
 
 사용법:
   python infer.py --image /path/to/image.jpg --description "이 문양은 ..."
@@ -27,8 +28,8 @@ HERE = Path(__file__).resolve().parent
 
 class DinoV3ImageEncoder(nn.Module):
     """DINOv3 이미지 인코더 (frozen). CLS 토큰 + patch 토큰 평균을 concat.
-    train_clip_emotion.py의 ClipVisionEncoder(DINO 분기)와 동일 로직 - 이 패키지를
-    외부 의존성 없이 완전히 독립 실행 가능하게 만들기 위해 여기 그대로 옮겨옴."""
+    학습 코드의 이미지 인코더와 동일 로직. 이 패키지가 외부 의존성 없이
+    단독 실행되도록 여기 그대로 옮겨 두었다."""
 
     def __init__(self, model_name: str):
         super().__init__()

@@ -1,11 +1,11 @@
-"""공통 데이터 유틸 (2026-07-24 emotion F1 실험).
+"""데이터 로딩·분할 유틸.
 
-- ETRI orig_4.4k_260519 annotations 에서 emotion(정답, 이미지당 정확히 5개) +
+- annotations/*.json 에서 emotion(정답, 이미지당 정확히 5개) +
   구조적 메타데이터(patern_type/usage/material/temporal/technique/motif/form/meaning) +
   description(한국어 서술) 을 모두 읽는다.
 - 평가는 top-5 set overlap (모든 샘플이 5개 라벨 -> P=R=F1).
-- split 은 기존 실험(train_clip_emotion.split_records, iterative stratification, seed=42,
-  val_ratio=0.1) 을 그대로 재사용해서 이전 결과들과 직접 비교 가능하게 한다.
+- split 은 iterative stratification, seed=42, val_ratio=0.1 로 고정한다.
+  같은 데이터면 항상 같은 3,954 / 446 분할이 나온다.
 - LEAKAGE 방지: description/메타데이터 문자열에서 22개 emotion 단어를 제거(redact)한 텍스트를
   기본으로 쓴다. (emotion 라벨을 텍스트에서 직접 읽어 맞히는 부정을 막기 위함)
 """
@@ -62,9 +62,9 @@ def build_vocab(records):
 
 
 def split_records(records, val_ratio=VAL_RATIO, seed=SEED):
-    """train_clip_emotion.split_records 와 동일한 iterative stratification.
+    """iterative stratification 으로 train/val 를 나눈다.
 
-    기존 실험과 정확히 같은 train/val 를 얻기 위해 로직을 복제한다."""
+    seed 를 고정하므로 같은 데이터면 항상 같은 분할이 나온다."""
     vocab = build_vocab(records)
     l2i = {l: i for i, l in enumerate(vocab)}
     sample_labels = [{l2i[e] for e in r["emotions"]} for r in records]
